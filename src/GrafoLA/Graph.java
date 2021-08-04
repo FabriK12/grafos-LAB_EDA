@@ -64,7 +64,7 @@ public class Graph<E> {
         listVertices = new LinkedList<Vertex<E>>();
     }
 
-    public void insert(E data) {
+    public void insertVertex(E data) {
         Vertex<E> v = new Vertex<E>(data);
         if(this.listVertices.isEmpty()) {
             this.listVertices.addFirst(v);
@@ -73,6 +73,23 @@ public class Graph<E> {
         }else{
             this.listVertices.addFirst(v);
         }
+    }
+
+    public void insertEdge(E vertexOrigin, E vertexDest) {
+        Vertex<E> refOrigin = search(vertexOrigin);
+        Vertex<E> refDest = search(vertexDest);
+
+    }
+
+    public Vertex<E> search(E vertexSearch) {
+        for(Vertex<E> v : this.listVertices){
+            if(v.data.equals(vertexSearch)) {
+                return v;
+            }else {
+                return null;
+            }
+        }
+        return null;
     }
 
     @Override
