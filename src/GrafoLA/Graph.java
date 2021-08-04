@@ -137,7 +137,7 @@ public class Graph<E> {
         }
     }
 
-    public void BST(E data) {
+    public void BFS(E data) {
         Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
         if(v == null){
             System.out.println("No existe el vertice...");
@@ -148,6 +148,27 @@ public class Graph<E> {
     }
 
     private void BFS(Vertex<E> v) {
+        ListLinked<Vertex<E>> fifo = new ListLinked<>();
+        fifo.insertLast(v);
+        v.isVisited = true;
+        while(!fifo.isEmpty()) {
+            Vertex<E> vertex = fifo.remove();
+            System.out.print(vertex.data + ", ");
+            Iterator<Edge<E>> itr = v.adjacencyList.iterator();
+            while(itr.hasNext()) {
+                Edge<E> e = itr.next();
+                if(e.estado == 0){
+                    Vertex<E> neighbor = e.refDestination;
+                    if(!neighbor.isVisited) {
+                        e.estado = 1;
+                        neighbor.isVisited = true;
+                        fifo.insertLast(neighbor);
+                    }else {
+                        e.estado = 2;
+                    }
+                }
+            }
+        }
         /*
         v.isVisited = true;
         System.out.print(v.data + ", ");

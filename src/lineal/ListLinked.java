@@ -39,7 +39,7 @@ public class ListLinked<E> {
 
     public void insertLast(E data) {
         Node nuevo = new Node(data);
-        if (this.isEmpty()) {
+        if (!this.isEmpty()) {
             Node aux = this.head;
             while (aux != null) {
                 if (aux.next == null) {
@@ -48,6 +48,8 @@ public class ListLinked<E> {
                 }
                 aux = aux.next;
             }
+        }else {
+            this.head = nuevo;
         }
     }
 
@@ -76,6 +78,7 @@ public class ListLinked<E> {
         if (!this.isEmpty()) {
             Node aux = this.head;
             this.head = this.head.next;
+            this.size--;
             return aux.data;
         }
         return null;

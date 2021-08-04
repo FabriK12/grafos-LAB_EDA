@@ -15,8 +15,11 @@ public class Test {
         graph.insertEdge('E', 'B');
         graph.insertEdge('V', 'B');
 
-        graph.DFS('V');
+        System.out.println(graph);
 
-//        System.out.println(graph);
+        graph.DFS('V');
+        System.out.println();
+        graph.BFS('E');
+
     }
 }
