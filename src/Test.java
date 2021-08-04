@@ -15,6 +15,8 @@ public class Test {
         graph.insertEdge('A', 'B');
         graph.insertEdge('E', 'B');
         graph.insertEdge('V', 'B');
+
+        graph.initLabels();
         System.out.println(graph);
     }
 }

@@ -95,6 +95,17 @@ public class Graph<E> {
 
     }
 
+    public void initLabels() {
+        Iterator<Vertex<E>> itr = this.listVertices.iterator();
+        while(itr.hasNext()) {
+            System.out.println(itr.next());
+        }
+    }
+
+    public static void DFS(Graph<?> g){
+
+    }
+
     @Override
     public String toString() {
         return "listVertices = {\n" + listVertices + "\n}";

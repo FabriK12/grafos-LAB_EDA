@@ -67,6 +67,13 @@ public class ListLinked<E> {
         return null;
     }
 
+    public E first() {
+        if(!this.isEmpty())
+            return this.head.data;
+        else
+            return null;
+    }
+
     //2.Implementar un iterator para la lista y mostrar todos sus elementos.
 
     private Node getKPosition(int k) throws IllegalStateException{
@@ -90,6 +97,7 @@ public class ListLinked<E> {
     }
 
     private class ListLinkedIterator implements Iterator<E>{
+        private Node next = head;
         private int cont = 0;
 
         public boolean hasNext() {
@@ -97,7 +105,18 @@ public class ListLinked<E> {
         }
 
         public E next() {
-            Node aux = getKPosition(cont);//cont comienza desde 0 osea k-esima posicion k=0
+//            Node aux = getKPosition(cont);//cont comienza desde 0 osea k-esima posicion k=0
+            Node aux;
+            if(this.next != null){
+                aux = this.next;
+            }else {
+                return null;
+            }
+            if(this.next.next != null){
+                this.next = this.next.next;
+            }else {
+                this.next = null;
+            }
             cont++;
             return aux.data;
         }
