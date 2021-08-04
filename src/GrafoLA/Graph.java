@@ -1,5 +1,6 @@
 package GrafoLA;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Graph<E> {
@@ -19,7 +20,7 @@ public class Graph<E> {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof Edge<?>) {
+            if (obj instanceof Edge<?>) {
                 Edge<T> obj1 = (Edge<T>) obj;
                 return this.refDestination.equals(obj1.refDestination);
             }
@@ -28,12 +29,13 @@ public class Graph<E> {
 
         @Override
         public String toString() {
-            if(this.weight > -1)
+            if (this.weight > -1)
                 return refDestination.data + " {" + this.weight + "}, ";
             else
                 return refDestination.data + ", ";
         }
     }
+
     private static class Vertex<T> {
         protected T data;
         protected LinkedList<Edge<T>> adjacencyList;
@@ -45,7 +47,7 @@ public class Graph<E> {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof Vertex<?>) {
+            if (obj instanceof Vertex<?>) {
                 Vertex<T> e = (Vertex<T>) obj;
                 return this.data.equals(e.data);
             }
@@ -66,36 +68,51 @@ public class Graph<E> {
 
     public void insertVertex(E data) {
         Vertex<E> v = new Vertex<E>(data);
-        if(this.listVertices.isEmpty()) {
+        if (this.listVertices.isEmpty()) {
             this.listVertices.addFirst(v);
-        }else if(this.listVertices.contains(v)) {
+        } else if (this.listVertices.contains(v)) {
             System.out.println("El nodo ya se inserto...");
-        }else{
+        } else {
             this.listVertices.addFirst(v);
         }
     }
 
     public void insertEdge(E vertexOrigin, E vertexDest) {
-        Vertex<E> refOrigin = search(vertexOrigin);
-        Vertex<E> refDest = search(vertexDest);
+        Vertex<E> refOrigin = searchVertex(vertexOrigin);
+        Vertex<E> refDest = searchVertex(vertexDest);
+        if (refOrigin == null || refDest == null) {
+            System.out.println("No se encuentran los vertices...");
+            return;
+        }
+        if (refOrigin.adjacencyList.contains(new Edge<E>(refDest))) {
+            System.out.println("Arista insertada con anterioridad...");
+            return;
+        }
+        refOrigin.adjacencyList.addFirst(new Edge<E>(refDest));
+        refDest.adjacencyList.addFirst(new Edge<E>(refOrigin));
 
     }
 
-    public Vertex<E> search(E vertexSearch) {
-        for(Vertex<E> v : this.listVertices){
-            if(v.data.equals(vertexSearch)) {
+    public Vertex<E> searchVertex(E vertexSearch) {
+        Iterator<Vertex<E>> itr = this.listVertices.iterator();
+        while(itr.hasNext()) {
+            System.out.println(itr.next());
+        }
+        for (int i = 0; i < this.listVertices.size(); i++) {
+            Vertex<E> v = this.listVertices.get(i);
+            /*
+            if (v.data.equals(vertexSearch)) {
                 return v;
-            }else {
+            } else {
                 return null;
             }
+             */
         }
         return null;
     }
 
     @Override
     public String toString() {
-        return "Graph{" +
-                "listVertices=" + listVertices +
-                '}';
+        return "listVertices=\n" + listVertices;
     }
 }

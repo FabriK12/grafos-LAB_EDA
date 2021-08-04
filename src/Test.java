@@ -5,7 +5,8 @@ public class Test {
         Graph<Character> graph = new Graph<Character>();
         graph.insertVertex('C');
         graph.insertVertex('V');
-        graph.insertVertex('C');
+
+        graph.insertEdge('C', 'V');
         System.out.println(graph);
     }
 }
