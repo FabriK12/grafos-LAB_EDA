@@ -88,7 +88,6 @@ public class Graph<E> {
                 refDest.adjacencyList.insertFirst(new Edge<E>(refOrigin));
             }else {
                 System.out.println("Arista insertada con anterioridad...");
-
             }
         }
 
@@ -96,6 +95,6 @@ public class Graph<E> {
 
     @Override
     public String toString() {
-        return "listVertices=\n" + listVertices;
+        return "listVertices = {\n" + listVertices + "\n}";
     }
 }

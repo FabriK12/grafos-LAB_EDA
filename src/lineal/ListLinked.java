@@ -111,9 +111,9 @@ public class ListLinked<E> {
             while(aux != null){
                 sb.append(aux.data);
                 aux = aux.next;
-                if(aux != null) {
-                    sb.append(", ");
-                }
+//                if(aux != null) {
+//                    sb.append(", ");
+//                }
             }
             sb.append("]");
         }else {
