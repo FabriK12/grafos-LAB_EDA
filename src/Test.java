@@ -11,12 +11,12 @@ public class Test {
 
         graph.insertEdge('C', 'V');
         graph.insertEdge('C', 'A');
-        graph.insertEdge('A', 'E');
-        graph.insertEdge('A', 'B');
+        graph.insertEdge('V', 'E');
         graph.insertEdge('E', 'B');
         graph.insertEdge('V', 'B');
 
-        graph.initLabels();
-        System.out.println(graph);
+        graph.DFS('V');
+
+//        System.out.println(graph);
     }
 }

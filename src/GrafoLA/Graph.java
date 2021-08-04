@@ -95,15 +95,46 @@ public class Graph<E> {
 
     }
 
-    public void initLabels() {
+    private void initLabels() {
         Iterator<Vertex<E>> itr = this.listVertices.iterator();
         while(itr.hasNext()) {
-            System.out.println(itr.next());
+            Vertex<E> aux = itr.next();
+            aux.isVisited = false;
+            Iterator<Edge<E>> itr2 = aux.adjacencyList.iterator();
+            while(itr2.hasNext()) {
+                Edge<E> aux2 = itr2.next();
+                aux2.estado = 0;
+            }
         }
     }
 
-    public static void DFS(Graph<?> g){
+    public void DFS(E data){//DEFINIR EL RECORRIDO EN CIERTO NODO
+        Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
+        if(v == null){
+            System.out.println("No existe el vertice...");
+            return;
+        }
+        this.initLabels();
+        DFS(v);
+    }
 
+    private void DFS(Vertex<E> v) {
+        v.isVisited = true;
+        System.out.print(v.data + ", ");
+        //RECORRER LA LISTA
+        Iterator<Edge<E>> itr = v.adjacencyList.iterator();
+        while(itr.hasNext()){
+            Edge<E> e = itr.next();
+            if(e.estado == 0){
+                Vertex<E> neighbor = e.refDestination;
+                if(!neighbor.isVisited){
+                    e.estado = 1;
+                    DFS(neighbor);
+                }else {
+                    e.estado = 2;
+                }
+            }
+        }
     }
 
     @Override
