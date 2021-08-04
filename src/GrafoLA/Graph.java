@@ -9,6 +9,7 @@ public class Graph<E> {
     private static class Edge<T> {
         protected Vertex<T> refDestination;
         protected int weight;
+        protected int estado; //0: Sin explorar, 1: Explorado, 2: Retorno
 
         public Edge(Vertex<T> refDestination) {
             this(refDestination, -1);
@@ -40,6 +41,7 @@ public class Graph<E> {
     private static class Vertex<T> {
         protected T data;
         protected ListLinked<Edge<T>> adjacencyList;
+        protected boolean isVisited;
 
         public Vertex(T data) {
             this.data = data;
