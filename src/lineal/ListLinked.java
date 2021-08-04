@@ -116,6 +116,8 @@ public class ListLinked<E> {
                 }
             }
             sb.append("]");
+        }else {
+            sb = new StringBuilder("[]");
         }
         return sb.toString();
     }

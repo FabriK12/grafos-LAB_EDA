@@ -1,7 +1,8 @@
 package GrafoLA;
 
+import lineal.ListLinked;
 import java.util.Iterator;
-import java.util.LinkedList;
+
 
 public class Graph<E> {
 
@@ -38,11 +39,11 @@ public class Graph<E> {
 
     private static class Vertex<T> {
         protected T data;
-        protected LinkedList<Edge<T>> adjacencyList;
+        protected ListLinked<Edge<T>> adjacencyList;
 
         public Vertex(T data) {
             this.data = data;
-            adjacencyList = new LinkedList<Edge<T>>();
+            adjacencyList = new ListLinked<Edge<T>>();
         }
 
         @Override
@@ -60,55 +61,37 @@ public class Graph<E> {
         }
     }
 
-    protected LinkedList<Vertex<E>> listVertices;
+    protected ListLinked<Vertex<E>> listVertices;
 
     public Graph() {
-        listVertices = new LinkedList<Vertex<E>>();
+        listVertices = new ListLinked<Vertex<E>>();
     }
 
     public void insertVertex(E data) {
         Vertex<E> v = new Vertex<E>(data);
-        if (this.listVertices.isEmpty()) {
-            this.listVertices.addFirst(v);
-        } else if (this.listVertices.contains(v)) {
-            System.out.println("El nodo ya se inserto...");
-        } else {
-            this.listVertices.addFirst(v);
+        if(this.listVertices.search(v) != null){
+            System.out.println("Vertice ya ingresado anteriormente...");
+            return;
         }
+        this.listVertices.insertFirst(v);
     }
 
     public void insertEdge(E vertexOrigin, E vertexDest) {
-        Vertex<E> refOrigin = searchVertex(vertexOrigin);
-        Vertex<E> refDest = searchVertex(vertexDest);
+        Vertex<E> refOrigin = this.listVertices.search(new Vertex<E>(vertexOrigin));
+        Vertex<E> refDest = this.listVertices.search(new Vertex<E>(vertexDest));
+
         if (refOrigin == null || refDest == null) {
             System.out.println("No se encuentran los vertices...");
-            return;
-        }
-        if (refOrigin.adjacencyList.contains(new Edge<E>(refDest))) {
-            System.out.println("Arista insertada con anterioridad...");
-            return;
-        }
-        refOrigin.adjacencyList.addFirst(new Edge<E>(refDest));
-        refDest.adjacencyList.addFirst(new Edge<E>(refOrigin));
+        }else {
+            if (refOrigin.adjacencyList.search(new Edge<E>(refDest)) == null) {
+                refOrigin.adjacencyList.insertFirst(new Edge<E>(refDest));
+                refDest.adjacencyList.insertFirst(new Edge<E>(refOrigin));
+            }else {
+                System.out.println("Arista insertada con anterioridad...");
 
-    }
-
-    public Vertex<E> searchVertex(E vertexSearch) {
-        Iterator<Vertex<E>> itr = this.listVertices.iterator();
-        while(itr.hasNext()) {
-            System.out.println(itr.next());
-        }
-        for (int i = 0; i < this.listVertices.size(); i++) {
-            Vertex<E> v = this.listVertices.get(i);
-            /*
-            if (v.data.equals(vertexSearch)) {
-                return v;
-            } else {
-                return null;
             }
-             */
         }
-        return null;
+
     }
 
     @Override
