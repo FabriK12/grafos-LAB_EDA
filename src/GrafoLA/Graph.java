@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Graph<E> {
 
-    private class Edge<T> {
+    private static class Edge<T> {
         protected Vertex<T> refDestination;
         protected int weight;
 
@@ -20,8 +20,8 @@ public class Graph<E> {
         @Override
         public boolean equals(Object obj) {
             if(obj instanceof Edge<?>) {
-                Edge<T> e = (Edge<T>) obj;
-                return this.refDestination.equals(e.refDestination);
+                Edge<T> obj1 = (Edge<T>) obj;
+                return this.refDestination.equals(obj1.refDestination);
             }
             return false;
         }
@@ -34,7 +34,7 @@ public class Graph<E> {
                 return refDestination.data + ", ";
         }
     }
-    private class Vertex<T> {
+    private static class Vertex<T> {
         protected T data;
         protected LinkedList<Edge<T>> adjacencyList;
 
@@ -62,5 +62,23 @@ public class Graph<E> {
 
     public Graph() {
         listVertices = new LinkedList<Vertex<E>>();
+    }
+
+    public void insert(E data) {
+        Vertex<E> v = new Vertex<E>(data);
+        if(this.listVertices.isEmpty()) {
+            this.listVertices.addFirst(v);
+        }else if(this.listVertices.contains(v)) {
+            System.out.println("El nodo ya se inserto...");
+        }else{
+            this.listVertices.addFirst(v);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "listVertices=" + listVertices +
+                '}';
     }
 }
