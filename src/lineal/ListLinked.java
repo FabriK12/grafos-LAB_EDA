@@ -37,21 +37,35 @@ public class ListLinked<E> {
         this.size++;
     }
 
-    public E search(E data){
+    public void insertLast(E data) {
+        Node nuevo = new Node(data);
+        if (this.isEmpty()) {
+            Node aux = this.head;
+            while (aux != null) {
+                if (aux.next == null) {
+                    aux.next = nuevo;
+                    break;
+                }
+                aux = aux.next;
+            }
+        }
+    }
+
+    public E search(E data) {
         Node aux = searchNode(data);
-        if(aux == null){
+        if (aux == null) {
             return null;
-        }else {
+        } else {
             return aux.data;
         }
     }
 
     private Node searchNode(E data) {
         Node actual = this.head;
-        while(actual != null){
-            if(actual.data.equals(data)) {
+        while (actual != null) {
+            if (actual.data.equals(data)) {
                 return actual;
-            }else {
+            } else {
                 actual = actual.next;
             }
         }
@@ -59,7 +73,7 @@ public class ListLinked<E> {
     }
 
     public E remove() {
-        if(!this.isEmpty()) {
+        if (!this.isEmpty()) {
             Node aux = this.head;
             this.head = this.head.next;
             return aux.data;
@@ -68,7 +82,7 @@ public class ListLinked<E> {
     }
 
     public E first() {
-        if(!this.isEmpty())
+        if (!this.isEmpty())
             return this.head.data;
         else
             return null;
@@ -76,8 +90,8 @@ public class ListLinked<E> {
 
     //2.Implementar un iterator para la lista y mostrar todos sus elementos.
 
-    private Node getKPosition(int k) throws IllegalStateException{
-        if(!this.isEmpty() && k>=0 && k < this.size()) {
+    private Node getKPosition(int k) throws IllegalStateException {
+        if (!this.isEmpty() && k >= 0 && k < this.size()) {
             Node aux = this.head;
             for (int i = this.size() - 1; ; i--) {//SE COMIENZA DESDE ATRAS YA QUE LA CABEZA SE ENCUENTRA AHI
                 if (i == k) {//AQUI SE DEVUELVE EL NODO EN LA POSICION K
@@ -86,17 +100,17 @@ public class ListLinked<E> {
                     aux = aux.next;
                 }
             }
-        }else {
+        } else {
             throw new IllegalStateException("IndexOutOfBoundsException");
         }
 
     }
 
-    public Iterator<E> iterator(){
+    public Iterator<E> iterator() {
         return new ListLinkedIterator();
     }
 
-    private class ListLinkedIterator implements Iterator<E>{
+    private class ListLinkedIterator implements Iterator<E> {
         private Node next = head;
         private int cont = 0;
 
@@ -107,14 +121,14 @@ public class ListLinked<E> {
         public E next() {
 //            Node aux = getKPosition(cont);//cont comienza desde 0 osea k-esima posicion k=0
             Node aux;
-            if(this.next != null){
+            if (this.next != null) {
                 aux = this.next;
-            }else {
+            } else {
                 return null;
             }
-            if(this.next.next != null){
+            if (this.next.next != null) {
                 this.next = this.next.next;
-            }else {
+            } else {
                 this.next = null;
             }
             cont++;
@@ -127,7 +141,7 @@ public class ListLinked<E> {
         StringBuilder sb = new StringBuilder("[");
         if (!this.isEmpty()) {
             Node aux = this.head;
-            while(aux != null){
+            while (aux != null) {
                 sb.append(aux.data);
                 aux = aux.next;
 //                if(aux != null) {
@@ -135,7 +149,7 @@ public class ListLinked<E> {
 //                }
             }
             sb.append("]");
-        }else {
+        } else {
             sb = new StringBuilder("[]");
         }
         return sb.toString();

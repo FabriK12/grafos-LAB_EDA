@@ -137,6 +137,37 @@ public class Graph<E> {
         }
     }
 
+    public void BST(E data) {
+        Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
+        if(v == null){
+            System.out.println("No existe el vertice...");
+            return;
+        }
+        this.initLabels();
+        BFS(v);
+    }
+
+    private void BFS(Vertex<E> v) {
+        /*
+        v.isVisited = true;
+        System.out.print(v.data + ", ");
+        //RECORRER LA LISTA
+        Iterator<Edge<E>> itr = v.adjacencyList.iterator();
+        while(itr.hasNext()){
+            Edge<E> e = itr.next();
+            if(e.estado == 0){
+                Vertex<E> neighbor = e.refDestination;
+                if(!neighbor.isVisited){
+                    e.estado = 1;
+                    BFS(neighbor);
+                }else {
+                    e.estado = 2;
+                }
+            }
+        }
+         */
+    }
+
     @Override
     public String toString() {
         return "listVertices = {\n" + listVertices + "\n}";
