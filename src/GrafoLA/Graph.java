@@ -1,7 +1,9 @@
 package GrafoLA;
 
 import lineal.ListLinked;
+
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 
 public class Graph<E> {
@@ -38,7 +40,7 @@ public class Graph<E> {
         }
     }
 
-    private static class Vertex<T> {
+    private static class Vertex<T> implements Comparable{
         protected T data;
         protected ListLinked<Edge<T>> adjacencyList;
         protected boolean isVisited;
@@ -62,6 +64,15 @@ public class Graph<E> {
         public String toString() {
             return this.data + " -> " + this.adjacencyList.toString() + "\n";
         }
+
+        @Override
+        public int compareTo(Object obj) {
+            if (obj instanceof Vertex<?>) {
+                Vertex<T> e = (Vertex<T>) obj;
+                return Integer.compare(e.distance, ((Vertex) obj).distance);
+            }
+            return 0;
+        }
     }
 
     protected ListLinked<Vertex<E>> listVertices;
@@ -72,7 +83,7 @@ public class Graph<E> {
 
     public void insertVertex(E data) {
         Vertex<E> v = new Vertex<E>(data);
-        if(this.listVertices.search(v) != null){
+        if (this.listVertices.search(v) != null) {
             System.out.println("Vertice ya ingresado anteriormente...");
             return;
         }
@@ -85,11 +96,11 @@ public class Graph<E> {
 
         if (refOrigin == null || refDest == null) {
             System.out.println("No se encuentran los vertices...");
-        }else {
+        } else {
             if (refOrigin.adjacencyList.search(new Edge<E>(refDest)) == null) {
                 refOrigin.adjacencyList.insertFirst(new Edge<E>(refDest));
                 refDest.adjacencyList.insertFirst(new Edge<E>(refOrigin));
-            }else {
+            } else {
                 System.out.println("Arista insertada con anterioridad...");
             }
         }
@@ -98,11 +109,11 @@ public class Graph<E> {
 
     private void initLabels() {
         Iterator<Vertex<E>> itr = this.listVertices.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             Vertex<E> aux = itr.next();
             aux.isVisited = false;
             Iterator<Edge<E>> itr2 = aux.adjacencyList.iterator();
-            while(itr2.hasNext()) {
+            while (itr2.hasNext()) {
                 Edge<E> aux2 = itr2.next();
                 aux2.estado = 0;
             }
@@ -111,7 +122,7 @@ public class Graph<E> {
 
     private void initDijkstra() {
         Iterator<Vertex<E>> itr = this.listVertices.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             Vertex<E> aux = itr.next();
             aux.isVisited = false;
             aux.distance = (int) Double.POSITIVE_INFINITY;
@@ -120,7 +131,7 @@ public class Graph<E> {
 
     public void Dijkstra(E data) {
         Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
-        if(v == null){
+        if (v == null) {
             System.out.println("No existe el vertice...");
             return;
         }
@@ -130,12 +141,30 @@ public class Graph<E> {
     }
 
     private void Dijkstra(Vertex<E> s) {
+        PriorityQueue<Vertex<E>> queue = new PriorityQueue<>();
+        s.distance = 0;
+        s.isVisited = true;
+        queue.add(s);
+        while (!queue.isEmpty()) {
+            Vertex<E> vertex = queue.poll();
 
+        }
     }
 
-    public void DFS(E data){//DEFINIR EL RECORRIDO EN CIERTO NODO
+    public void test() {
+        PriorityQueue<Vertex<Character>> queue = new PriorityQueue<>();
+        Vertex<Character> a = new Vertex<>('C');
+        Vertex<Character> b = new Vertex<>('A');
+        a.distance = 1;
+        b.distance = 5;
+        queue.add(b);
+        queue.add(a);
+        System.out.println(queue);
+    }
+
+    public void DFS(E data) {//DEFINIR EL RECORRIDO EN CIERTO NODO
         Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
-        if(v == null){
+        if (v == null) {
             System.out.println("No existe el vertice...");
             return;
         }
@@ -148,14 +177,14 @@ public class Graph<E> {
         System.out.print(v.data + ", ");
         //RECORRER LA LISTA
         Iterator<Edge<E>> itr = v.adjacencyList.iterator();
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             Edge<E> e = itr.next();
-            if(e.estado == 0){
+            if (e.estado == 0) {
                 Vertex<E> neighbor = e.refDestination;
-                if(!neighbor.isVisited){
+                if (!neighbor.isVisited) {
                     e.estado = 1;
                     DFS(neighbor);
-                }else {
+                } else {
                     e.estado = 2;
                 }
             }
@@ -164,7 +193,7 @@ public class Graph<E> {
 
     public void BFS(E data) {
         Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
-        if(v == null){
+        if (v == null) {
             System.out.println("No existe el vertice...");
             return;
         }
@@ -176,19 +205,19 @@ public class Graph<E> {
         ListLinked<Vertex<E>> fifo = new ListLinked<>();
         fifo.insertLast(v);
         v.isVisited = true;
-        while(!fifo.isEmpty()) {
+        while (!fifo.isEmpty()) {
             Vertex<E> vertex = fifo.remove();
             System.out.print(vertex.data + ", ");
             Iterator<Edge<E>> itr = vertex.adjacencyList.iterator();
-            while(itr.hasNext()) {
+            while (itr.hasNext()) {
                 Edge<E> e = itr.next();
-                if(e.estado == 0){
+                if (e.estado == 0) {
                     Vertex<E> neighbor = e.refDestination;
-                    if(!neighbor.isVisited) {
+                    if (!neighbor.isVisited) {
                         e.estado = 1;
                         neighbor.isVisited = true;
                         fifo.insertLast(neighbor);
-                    }else {
+                    } else {
                         e.estado = 2;
                     }
                 }
