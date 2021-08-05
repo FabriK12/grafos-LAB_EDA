@@ -42,6 +42,7 @@ public class Graph<E> {
         protected T data;
         protected ListLinked<Edge<T>> adjacencyList;
         protected boolean isVisited;
+        protected int distance;
 
         public Vertex(T data) {
             this.data = data;
@@ -108,6 +109,30 @@ public class Graph<E> {
         }
     }
 
+    private void initDijkstra() {
+        Iterator<Vertex<E>> itr = this.listVertices.iterator();
+        while(itr.hasNext()) {
+            Vertex<E> aux = itr.next();
+            aux.isVisited = false;
+            aux.distance = (int) Double.POSITIVE_INFINITY;
+        }
+    }
+
+    public void Dijkstra(E data) {
+        Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
+        if(v == null){
+            System.out.println("No existe el vertice...");
+            return;
+        }
+        this.initLabels();
+        this.initDijkstra();
+//        Dijkstra(v);
+    }
+
+    private void Dijkstra(Vertex<E> s) {
+
+    }
+
     public void DFS(E data){//DEFINIR EL RECORRIDO EN CIERTO NODO
         Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
         if(v == null){
@@ -154,7 +179,7 @@ public class Graph<E> {
         while(!fifo.isEmpty()) {
             Vertex<E> vertex = fifo.remove();
             System.out.print(vertex.data + ", ");
-            Iterator<Edge<E>> itr = v.adjacencyList.iterator();
+            Iterator<Edge<E>> itr = vertex.adjacencyList.iterator();
             while(itr.hasNext()) {
                 Edge<E> e = itr.next();
                 if(e.estado == 0){

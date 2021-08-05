@@ -14,12 +14,14 @@ public class Test {
         graph.insertEdge('V', 'E');
         graph.insertEdge('E', 'B');
         graph.insertEdge('V', 'B');
+        graph.insertEdge('V', 'A');
 
         System.out.println(graph);
 
+        System.out.println("RECORRIDO DFS: ");
         graph.DFS('V');
-        System.out.println();
-        graph.BFS('E');
+        System.out.println("RECORRIDO BFS: ");
+        graph.BFS('V');
 
     }
 }
