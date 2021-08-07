@@ -1,6 +1,8 @@
 # GRAFOS
 # Alumno
- + Fabricio Alonso Balarezo Delgado
+ + Fabricio Alonso Balarezo Delgado 
+
+### Enlace al [Cuestionario](https://github.com/FabriK12/grafos-LAB_EDA/blob/master/docs/Cuestionario.pdf)
 
 La representacion grafica del caso de prueba se encuentra a la izquierda y la del codigo a la derecha
 ## Representacion por lista de adyacencia
