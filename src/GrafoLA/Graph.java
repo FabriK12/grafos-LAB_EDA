@@ -40,7 +40,7 @@ public class Graph<E> {
         }
     }
 
-    private static class Vertex<T> implements Comparable{
+    private static class Vertex<T> implements Comparable<Vertex<T>> {
         protected T data;
         protected ListLinked<Edge<T>> adjacencyList;
         protected boolean isVisited;
@@ -48,7 +48,7 @@ public class Graph<E> {
 
         public Vertex(T data) {
             this.data = data;
-            adjacencyList = new ListLinked<Edge<T>>();
+            adjacencyList = new ListLinked<>();
         }
 
         @Override
@@ -62,27 +62,40 @@ public class Graph<E> {
 
         @Override
         public String toString() {
-            return this.data + " -> " + this.adjacencyList.toString() + "\n";
+            return this.data + "{" + this.distance + "} -> " + this.adjacencyList.toString() + "\n";
         }
 
+        final public int compDistance(Vertex<T> b){
+            return this.distance - b.distance;
+        }
+
+        @Override
+        public int compareTo(Vertex<T> o) {
+            if(compDistance(o) < 0) return -1;
+            if(compDistance(o) > 0) return 1;
+            return 0;
+        }
+
+        /*
         @Override
         public int compareTo(Object obj) {
             if (obj instanceof Vertex<?>) {
                 Vertex<T> e = (Vertex<T>) obj;
-                return Integer.compare(e.distance, ((Vertex) obj).distance);
+                return -1;
             }
             return 0;
         }
+         */
     }
 
     protected ListLinked<Vertex<E>> listVertices;
 
     public Graph() {
-        listVertices = new ListLinked<Vertex<E>>();
+        listVertices = new ListLinked<>();
     }
 
     public void insertVertex(E data) {
-        Vertex<E> v = new Vertex<E>(data);
+        Vertex<E> v = new Vertex<>(data);
         if (this.listVertices.search(v) != null) {
             System.out.println("Vertice ya ingresado anteriormente...");
             return;
@@ -90,16 +103,33 @@ public class Graph<E> {
         this.listVertices.insertFirst(v);
     }
 
-    public void insertEdge(E vertexOrigin, E vertexDest) {
-        Vertex<E> refOrigin = this.listVertices.search(new Vertex<E>(vertexOrigin));
-        Vertex<E> refDest = this.listVertices.search(new Vertex<E>(vertexDest));
+    public void insertEdge(E vertexOrigin, E vertexDest, int weight) {
+        Vertex<E> refOrigin = this.listVertices.search(new Vertex<>(vertexOrigin));
+        Vertex<E> refDest = this.listVertices.search(new Vertex<>(vertexDest));
 
         if (refOrigin == null || refDest == null) {
             System.out.println("No se encuentran los vertices...");
         } else {
-            if (refOrigin.adjacencyList.search(new Edge<E>(refDest)) == null) {
-                refOrigin.adjacencyList.insertFirst(new Edge<E>(refDest));
-                refDest.adjacencyList.insertFirst(new Edge<E>(refOrigin));
+            if (refOrigin.adjacencyList.search(new Edge<>(refDest)) == null) {
+                refOrigin.adjacencyList.insertFirst(new Edge<>(refDest, weight));
+                refDest.adjacencyList.insertFirst(new Edge<>(refOrigin, weight));
+            } else {
+                System.out.println("Arista insertada con anterioridad...");
+            }
+        }
+
+    }
+
+    public void insertEdge(E vertexOrigin, E vertexDest) {
+        Vertex<E> refOrigin = this.listVertices.search(new Vertex<>(vertexOrigin));
+        Vertex<E> refDest = this.listVertices.search(new Vertex<>(vertexDest));
+
+        if (refOrigin == null || refDest == null) {
+            System.out.println("No se encuentran los vertices...");
+        } else {
+            if (refOrigin.adjacencyList.search(new Edge<>(refDest)) == null) {
+                refOrigin.adjacencyList.insertFirst(new Edge<>(refDest));
+                refDest.adjacencyList.insertFirst(new Edge<>(refOrigin));
             } else {
                 System.out.println("Arista insertada con anterioridad...");
             }
@@ -130,24 +160,37 @@ public class Graph<E> {
     }
 
     public void Dijkstra(E data) {
-        Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
+        Vertex<E> v = this.listVertices.search(new Vertex<>(data));
         if (v == null) {
             System.out.println("No existe el vertice...");
             return;
         }
         this.initLabels();
         this.initDijkstra();
+        Dijkstra(v);
 //        Dijkstra(v);
     }
 
     private void Dijkstra(Vertex<E> s) {
         PriorityQueue<Vertex<E>> queue = new PriorityQueue<>();
         s.distance = 0;
-        s.isVisited = true;
         queue.add(s);
         while (!queue.isEmpty()) {
             Vertex<E> vertex = queue.poll();
-
+            vertex.isVisited = true;
+            Iterator<Edge<E>> itr = vertex.adjacencyList.iterator();
+            while (itr.hasNext()) {
+                Edge<E> e = itr.next();
+                Vertex<E> neighbor = e.refDestination;
+//                System.out.println(neighbor);
+                if (!neighbor.isVisited) {
+                    if (neighbor.distance > vertex.distance + e.weight) {
+                        neighbor.distance = vertex.distance + e.weight;
+//                        System.out.println(neighbor);
+                        queue.add(neighbor);
+                    }
+                }
+            }
         }
     }
 
@@ -159,11 +202,11 @@ public class Graph<E> {
         b.distance = 5;
         queue.add(b);
         queue.add(a);
-        System.out.println(queue);
+        System.out.println(queue.poll());
     }
 
     public void DFS(E data) {//DEFINIR EL RECORRIDO EN CIERTO NODO
-        Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
+        Vertex<E> v = this.listVertices.search(new Vertex<>(data));
         if (v == null) {
             System.out.println("No existe el vertice...");
             return;
@@ -192,7 +235,7 @@ public class Graph<E> {
     }
 
     public void BFS(E data) {
-        Vertex<E> v = this.listVertices.search(new Vertex<E>(data));
+        Vertex<E> v = this.listVertices.search(new Vertex<>(data));
         if (v == null) {
             System.out.println("No existe el vertice...");
             return;
